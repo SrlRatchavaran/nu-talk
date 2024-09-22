@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:nutalk/constant.dart';
 import 'package:nutalk/helper/navigator_helper_app.dart';
 
 void main() async {
