@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -11,25 +13,24 @@ class MainNavigatorBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: child,
-      bottomNavigationBar: SizedBox(
-        height: 68,
-        child: Column(
-          children: [
-            BottomNavigationBar(
-              selectedLabelStyle: customTextStyle(context: context),
-              unselectedLabelStyle: customTextStyle(context: context, color: TextStyleColor.secondaryColor),
+    return Stack(
+      children: [
+        Scaffold(
+          body: child,
+          bottomNavigationBar: SizedBox(
+            height: 85,
+            child: BottomNavigationBar(
+              elevation: 0,
+              selectedLabelStyle: customTextStyle(
+                  context: context,
+                  fontSize: TextStyleSize.s14,
+                  fontWeight: TextStyleWeight.bold),
+              unselectedLabelStyle: customTextStyle(
+                  context: context,
+                  color: TextStyleColor.secondaryColor,
+                  fontSize: TextStyleSize.s12),
               currentIndex: child.currentIndex,
-              // backgroundColor: Constants.myTheme == 1
-              //     ? Color(0xfffceb91)
-              //     : Constants.myTheme == 2
-              //         ? Color(0xffc3c7e2)
-              //         : Constants.myTheme == 3
-              //             ? Color(0xffeaafae)
-              //             : Constants.myTheme == 4
-              //                 ? Color(0xffd6965a)
-              //                 : Color(0xffeaafae),
+              backgroundColor: primaryTheme1,
               type: BottomNavigationBarType.fixed,
               selectedItemColor: whiteColor,
               unselectedItemColor: disableColor,
@@ -37,55 +38,63 @@ class MainNavigatorBar extends StatelessWidget {
                 BottomNavigationBarItem(
                   icon: CustomIcon(
                     IconName.bottomBarIconCommunity,
-                    height: 30,
-                    color: blackColor.withOpacity(0.9),
+                    height: 15,
+                    color: blackColor.withOpacity(0.4),
                   ),
                   label: tr('bottom_bar.community'),
                 ),
                 BottomNavigationBarItem(
                   icon: const CustomIcon(
                     IconName.bottomBarIconChat,
-                    height: 40,
+                    height: 20,
                   ),
                   label: tr('bottom_bar.chat'),
                 ),
                 BottomNavigationBarItem(
                   icon: const CustomIcon(
-                    IconName.profileStaff6,
-                    height: 40,
+                    IconName.profileStaff1,
+                    height: 20,
                   ),
                   label: tr('bottom_bar.home'),
                 ),
                 BottomNavigationBarItem(
                   icon: const CustomIcon(
                     IconName.bottomBarIconNote,
-                    height: 40,
+                    height: 20,
                   ),
                   label: tr('bottom_bar.note'),
                 ),
                 BottomNavigationBarItem(
                   icon: const CustomIcon(
                     IconName.bottomBarIconBooking,
-                    height: 40,
+                    height: 20,
                   ),
                   label: tr('bottom_bar.booking'),
                 ),
               ],
               onTap: (index) {
-                child.goBranch(index, initialLocation: index == child.currentIndex);
-                // setState(() {
-                //   checkPage(index);
-                //   //widget.currentIndex = index;
-                //   Navigator.pushReplacement(
-                //       context, MaterialPageRoute(builder: (context) => MainPage(index, widget.email)));
-                //   print(_children[widget.currentIndex]);
-                // });
+                child.goBranch(index,
+                    initialLocation: index == child.currentIndex);
               },
             ),
-            //notificationList(),
-          ],
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.only(bottom: 23),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: GestureDetector(
+                onTap: () =>
+                    child.goBranch(2, initialLocation: 2 == child.currentIndex),
+                child: const CustomIcon(
+                  IconName.profileStaff1,
+                  height: 60,
+                ),
+              ),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }

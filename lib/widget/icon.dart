@@ -27,7 +27,7 @@ class CustomIcon extends StatelessWidget {
   const CustomIcon(this.name, {this.width, this.height, this.color, super.key});
 
   Widget _pngImage(String path) {
-    return Image.asset('asset/icons/$path.png', width: width, height: height, color: color);
+    return Image.asset('assets/images/$path.png', width: width, height: height, color: color);
   }
 
   @override
@@ -50,6 +50,24 @@ class CustomIcon extends StatelessWidget {
 
       case IconName.profileUser6:
         return _pngImage('profile6');
+
+      case IconName.profileStaff1:
+        return _pngImage('profile7');
+
+      case IconName.profileStaff2:
+        return _pngImage('profile8');
+
+      case IconName.profileStaff3:
+        return _pngImage('profile9');
+
+      case IconName.profileStaff4:
+        return _pngImage('profile10');
+
+      case IconName.profileStaff5:
+        return _pngImage('profile11');
+
+      case IconName.profileStaff6:
+        return _pngImage('profile12');
 
       case IconName.bottomBarIconChat:
         return _pngImage('chat_icon');
