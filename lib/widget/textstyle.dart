@@ -6,22 +6,12 @@ enum TextStyleColor {
   secondaryColor,
 }
 
-enum TextStyleSize { s12, s14, s16, s20, s24 }
+enum TextStyleSize { s12, s16, s17, s19, s20, s45 }
 
-enum TextStyleWeight {
-  thin,
-  extraLight,
-  light,
-  normal,
-  medium,
-  semiBold,
-  bold,
-  extraBold,
-  black
-}
+enum TextStyleWeight { thin, extraLight, light, normal, medium, semiBold, bold, extraBold, black }
 
 extension TextStyleColorExtension on TextStyleColor {
-  Color toColor(BuildContext context) {
+  Color? toColor(BuildContext context) {
     switch (this) {
       case TextStyleColor.primaryColor:
         return primaryText;
@@ -30,7 +20,7 @@ extension TextStyleColorExtension on TextStyleColor {
         return secondaryText;
 
       default:
-        return primaryText;
+        return null;
     }
   }
 }
@@ -69,39 +59,121 @@ extension TextStyleWeightExtension on TextStyleWeight {
 }
 
 extension TextStyleSizeExtension on TextStyleSize {
-  double get toDouble {
+  double? get toDouble {
     switch (this) {
       case TextStyleSize.s12:
         return 12;
 
-      case TextStyleSize.s14:
-        return 14;
-
       case TextStyleSize.s16:
         return 16;
+
+      case TextStyleSize.s17:
+        return 17;
+
+      case TextStyleSize.s19:
+        return 19;
 
       case TextStyleSize.s20:
         return 20;
 
-      case TextStyleSize.s24:
-        return 24;
+      case TextStyleSize.s45:
+        return 45;
 
       default:
-        return 16;
+        return null;
     }
   }
 }
 
+enum TextStyleTypography {
+  simpleTextStyle,
+  simpleTextErrorStyle,
+  simpleHeadTextStyle,
+  mainTextStyle,
+  biggerTextStyle,
+  headTextStyle,
+  smallTextStyle
+}
+
+TextStyle simpleTextStyle() {
+  return TextStyle(color: Colors.black54, fontSize: 16, fontFamily: 'Nexa');
+}
+
+TextStyle simpleTextErrorStyle() {
+  return TextStyle(color: Colors.red, fontSize: 16, fontFamily: 'Nexa');
+}
+
+TextStyle simpleHeadTextStyle() {
+  return TextStyle(color: Colors.black, fontSize: 19, fontFamily: 'Nexa');
+}
+
+TextStyle mainTextStyle() {
+  return TextStyle(color: Colors.black, fontSize: 45, fontFamily: 'Nexa');
+}
+
+TextStyle biggerTextStyle() {
+  return TextStyle(color: Colors.white, fontSize: 17, fontFamily: 'Nexa');
+}
+
+TextStyle headTextStyle() {
+  return TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'Nexa');
+}
+
+TextStyle smallTextStyle() {
+  return TextStyle(color: Colors.black54, fontSize: 12, fontFamily: 'Nexa');
+}
+
 TextStyle customTextStyle({
   required BuildContext context,
-  TextStyleColor? color,
+  TextStyleColor? colorFont,
   TextStyleSize? fontSize,
   TextStyleWeight? fontWeight,
+  TextStyleTypography? typography,
 }) {
+  TextStyleSize? size;
+  Color? color;
+  switch (typography) {
+    case TextStyleTypography.biggerTextStyle:
+      color = whiteColor;
+      size = TextStyleSize.s17;
+      break;
+
+    case TextStyleTypography.headTextStyle:
+      color = blackColor;
+      size = TextStyleSize.s20;
+      break;
+
+    case TextStyleTypography.mainTextStyle:
+      color = blackColor;
+      size = TextStyleSize.s45;
+      break;
+
+    case TextStyleTypography.simpleHeadTextStyle:
+      color = blackColor;
+      size = TextStyleSize.s19;
+      break;
+
+    case TextStyleTypography.simpleTextErrorStyle:
+      color = redColor;
+      size = TextStyleSize.s16;
+      break;
+
+    case TextStyleTypography.simpleTextStyle:
+      color = black54Color;
+      size = TextStyleSize.s16;
+      break;
+
+    case TextStyleTypography.smallTextStyle:
+      color = black54Color;
+      size = TextStyleSize.s12;
+      break;
+      
+    default:
+      break;
+  }
   return TextStyle(
-    color:
-        color?.toColor(context) ?? TextStyleColor.primaryColor.toColor(context),
-    fontSize: fontSize?.toDouble,
+    color: colorFont?.toColor(context) ?? color ?? TextStyleColor.primaryColor.toColor(context),
+    fontSize: fontSize?.toDouble ?? size?.toDouble,
     fontWeight: fontWeight?.toFontWeight,
   );
 }
