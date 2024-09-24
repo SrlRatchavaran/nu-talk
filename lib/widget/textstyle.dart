@@ -1,27 +1,107 @@
 import 'package:flutter/material.dart';
 import 'package:nutalk/constant.dart';
 
-enum TextStyleTypography{
-   headText,
-}
-
-enum TextStyleColor{
+enum TextStyleColor {
   primaryColor,
   secondaryColor,
 }
 
-extension TextStyleColorExtension on TextStyleColor{
-  Color toColor(BuildContext context){
-    switch(this){
-      case TextStyleColor.primaryColor :
-        return  primaryText;
-      case TextStyleColor.secondaryColor :
-        return  secondaryText;
+enum TextStyleSize { s12, s14, s16, s20, s24 }
+
+enum TextStyleWeight {
+  thin,
+  extraLight,
+  light,
+  normal,
+  medium,
+  semiBold,
+  bold,
+  extraBold,
+  black
+}
+
+extension TextStyleColorExtension on TextStyleColor {
+  Color toColor(BuildContext context) {
+    switch (this) {
+      case TextStyleColor.primaryColor:
+        return primaryText;
+
+      case TextStyleColor.secondaryColor:
+        return secondaryText;
+
       default:
-      return primaryText;
+        return primaryText;
     }
   }
 }
-TextStyle customTextStyle({required BuildContext context,TextStyleColor? color}){
-  return TextStyle(color: color?.toColor(context) ?? TextStyleColor.primaryColor.toColor(context));
+
+extension TextStyleWeightExtension on TextStyleWeight {
+  FontWeight get toFontWeight {
+    switch (this) {
+      case TextStyleWeight.thin:
+        return FontWeight.w100;
+
+      case TextStyleWeight.extraLight:
+        return FontWeight.w200;
+
+      case TextStyleWeight.light:
+        return FontWeight.w300;
+
+      case TextStyleWeight.normal:
+        return FontWeight.w400;
+
+      case TextStyleWeight.medium:
+        return FontWeight.w500;
+
+      case TextStyleWeight.semiBold:
+        return FontWeight.w600;
+
+      case TextStyleWeight.bold:
+        return FontWeight.w700;
+
+      case TextStyleWeight.extraBold:
+        return FontWeight.w800;
+
+      case TextStyleWeight.black:
+        return FontWeight.w900;
+    }
+  }
+}
+
+extension TextStyleSizeExtension on TextStyleSize {
+  double get toDouble {
+    switch (this) {
+      case TextStyleSize.s12:
+        return 12;
+
+      case TextStyleSize.s14:
+        return 14;
+
+      case TextStyleSize.s16:
+        return 16;
+
+      case TextStyleSize.s20:
+        return 20;
+
+      case TextStyleSize.s24:
+        return 24;
+
+      default:
+        return 16;
+    }
+  }
+}
+
+TextStyle customTextStyle({
+  required BuildContext context,
+  TextStyleColor? color,
+  TextStyleSize? fontSize,
+  TextStyleWeight? fontWeight,
+}) {
+  return TextStyle(
+    color:
+        color?.toColor(context) ?? TextStyleColor.primaryColor.toColor(context),
+    fontSize: fontSize?.toDouble,
+    fontWeight: fontWeight?.toFontWeight,
+  );
 }
