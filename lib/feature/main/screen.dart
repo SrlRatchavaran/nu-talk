@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nutalk/base/base_widget.dart';
 import 'package:nutalk/constant.dart';
 import 'package:nutalk/feature/main/viewmodel.dart';
+import 'package:nutalk/provider/navigator_provider.dart';
 import 'package:nutalk/widget/icon.dart';
 import 'package:nutalk/widget/textstyle.dart';
 
@@ -19,7 +20,7 @@ class MainNavigatorBar extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: primaryTheme1,
+          backgroundColor: model.primaryColorTheme,
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(40.0))),
           title: SizedBox(
             width: 200,
@@ -70,137 +71,139 @@ class MainNavigatorBar extends StatelessWidget {
     );
   }
 
-  PreferredSizeWidget _appBar(BuildContext context, {required MainViewModel model}){
+  PreferredSizeWidget _appBar(BuildContext context, {required MainViewModel model}) {
     return AppBar(
-                  backgroundColor: primaryTheme1,
-                  title: Row(
-                    children: [
-                      const CustomIcon(
-                        IconName.profileUser1,
-                        height: 45,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        child: Text(
-                          'NAME',
-                          style: simpleTextStyle(),
-                        ),
-                      )
-                    ],
-                  ),
-                  actions: [
-                    GestureDetector(
-                      onTap: () {
-                        model.currentIndex = 0;
-                        _onTapHelp(context, model: model);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        child: const Icon(Icons.help, size: 32),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        child: const Icon(Icons.settings, size: 32),
-                      ),
-                    )
-                  ],
-                );
+      backgroundColor: model.primaryColorTheme,
+      title: Row(
+        children: [
+          const CustomIcon(
+            IconName.profileUser1,
+            height: 45,
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            child: Text(
+              'NAME',
+              style: customTextStyle(context: context, typography: TextStyleTypography.simpleTextStyle),
+            ),
+          )
+        ],
+      ),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            model.currentIndex = 0;
+            _onTapHelp(context, model: model);
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            child: const Icon(Icons.help, size: 32),
+          ),
+        ),
+        GestureDetector(
+          onTap: () => context.navigatorProvider.pushToSetting(),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            child: const Icon(Icons.settings, size: 32),
+          ),
+        )
+      ],
+    );
   }
+
+  BottomNavigationBarItem _contentBottomNavigationBar({
+    required String lable,
+    required IconName icon,
+    Color? color,
+    double? height,
+  }) =>
+      BottomNavigationBarItem(
+        icon: CustomIcon(
+          icon,
+          height: height ?? 20,
+          color: color,
+        ),
+        label: tr('bottom_bar.$lable'),
+      );
+
+  Widget _bottomNavigationBar(BuildContext context,{required MainViewModel model}) {
+    return SizedBox(
+      height: 85,
+      child: BottomNavigationBar(
+        elevation: 0,
+        selectedLabelStyle: customTextStyle(
+            context: context, typography: TextStyleTypography.simpleTextStyle, fontWeight: TextStyleWeight.bold),
+        unselectedLabelStyle: customTextStyle(
+          context: context,
+          typography: TextStyleTypography.smallTextStyle,
+          colorFont: TextStyleColor.secondaryColor,
+        ),
+        currentIndex: child.currentIndex,
+        backgroundColor: model.primaryColorTheme,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: whiteColor,
+        unselectedItemColor: disableColor,
+        items: [
+          _contentBottomNavigationBar(
+            icon: IconName.bottomBarIconCommunity,
+            color: blackColor.withOpacity(0.4),
+            height: 15,
+            lable: 'community',
+          ),
+          _contentBottomNavigationBar(
+            icon: IconName.bottomBarIconChat,
+            lable: 'chat',
+          ),
+          _contentBottomNavigationBar(
+            icon: IconName.profileStaff1,
+            lable: 'home',
+          ),
+          _contentBottomNavigationBar(
+            icon: IconName.bottomBarIconNote,
+            lable: 'note',
+          ),
+          _contentBottomNavigationBar(
+            icon: IconName.bottomBarIconBooking,
+            lable: 'booking',
+          ),
+        ],
+        onTap: (index) {
+          child.goBranch(index, initialLocation: index == child.currentIndex);
+        },
+      ),
+    );
+  }
+
+  Widget _floatingActionButton(BuildContext context) => Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom == 0.0 ? 41 : 23),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: GestureDetector(
+            onTap: () => child.goBranch(2, initialLocation: 2 == child.currentIndex),
+            child: const CustomIcon(
+              IconName.profileStaff1,
+              height: 60,
+            ),
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
     log('BOTTOM: ${MediaQuery.of(context).viewInsets.bottom}');
     return BaseWidget<MainViewModel>(
-        model: MainViewModel(),
-        onModelReady: (model) {},
-        onPageResume: (model) {},
-        builder: (context, model, _) {
-          return Stack(
-            children: [
-              Scaffold(
-                appBar: _appBar(context, model: model),
-                body: child,
-                bottomNavigationBar: SizedBox(
-                  height: 85,
-                  child: BottomNavigationBar(
-                    elevation: 0,
-                    selectedLabelStyle: customTextStyle(
-                        context: context,
-                        typography: TextStyleTypography.simpleTextStyle,
-                        fontWeight: TextStyleWeight.bold),
-                    unselectedLabelStyle: customTextStyle(
-                      context: context,
-                      typography: TextStyleTypography.smallTextStyle,
-                      colorFont: TextStyleColor.secondaryColor,
-                    ),
-                    currentIndex: child.currentIndex,
-                    backgroundColor: primaryTheme1,
-                    type: BottomNavigationBarType.fixed,
-                    selectedItemColor: whiteColor,
-                    unselectedItemColor: disableColor,
-                    items: [
-                      BottomNavigationBarItem(
-                        icon: CustomIcon(
-                          IconName.bottomBarIconCommunity,
-                          height: 15,
-                          color: blackColor.withOpacity(0.4),
-                        ),
-                        label: tr('bottom_bar.community'),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: const CustomIcon(
-                          IconName.bottomBarIconChat,
-                          height: 20,
-                        ),
-                        label: tr('bottom_bar.chat'),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: const CustomIcon(
-                          IconName.profileStaff1,
-                          height: 20,
-                        ),
-                        label: tr('bottom_bar.home'),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: const CustomIcon(
-                          IconName.bottomBarIconNote,
-                          height: 20,
-                        ),
-                        label: tr('bottom_bar.note'),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: const CustomIcon(
-                          IconName.bottomBarIconBooking,
-                          height: 20,
-                        ),
-                        label: tr('bottom_bar.booking'),
-                      ),
-                    ],
-                    onTap: (index) {
-                      child.goBranch(index, initialLocation: index == child.currentIndex);
-                    },
-                  ),
-                ),
-                floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-                floatingActionButton: Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom == 0.0 ? 41 : 23),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: GestureDetector(
-                      onTap: () => child.goBranch(2, initialLocation: 2 == child.currentIndex),
-                      child: const CustomIcon(
-                        IconName.profileStaff1,
-                        height: 60,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        });
+      model: MainViewModel(context),
+      onModelReady: (model) {},
+      onPageResume: (model) {},
+      builder: (context, model, _) {
+        return Scaffold(
+          appBar: _appBar(context, model: model),
+          body: child,
+          bottomNavigationBar: _bottomNavigationBar(context,model: model),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: _floatingActionButton(context),
+        );
+      },
+    );
   }
 }

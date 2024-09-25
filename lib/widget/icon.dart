@@ -20,7 +20,12 @@ enum IconName {
   help1,
   help2,
   help3,
-  help4
+  help4,
+  theme1,
+  theme2,
+  theme3,
+  theme4,
+  theme5
 }
 
 class CustomIcon extends StatelessWidget {
@@ -96,6 +101,21 @@ class CustomIcon extends StatelessWidget {
 
       case IconName.help4:
         return _pngImage('help4');
+        
+      case IconName.theme1:
+        return _pngImage('theme1');
+
+      case IconName.theme2:
+        return _pngImage('theme2');
+
+      case IconName.theme3:
+        return _pngImage('theme3');
+
+      case IconName.theme4:
+        return _pngImage('theme4');
+
+      case IconName.theme5:
+        return _pngImage('theme5');
 
       default:
         return Container();

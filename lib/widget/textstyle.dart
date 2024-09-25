@@ -6,7 +6,7 @@ enum TextStyleColor {
   secondaryColor,
 }
 
-enum TextStyleSize { s12, s16, s17, s19, s20, s45 }
+enum TextStyleSize { s12, s16, s17, s19, s20, s24, s45 }
 
 enum TextStyleWeight { thin, extraLight, light, normal, medium, semiBold, bold, extraBold, black }
 
@@ -76,6 +76,9 @@ extension TextStyleSizeExtension on TextStyleSize {
       case TextStyleSize.s20:
         return 20;
 
+      case TextStyleSize.s24:
+        return 24;
+
       case TextStyleSize.s45:
         return 45;
 
@@ -93,34 +96,6 @@ enum TextStyleTypography {
   biggerTextStyle,
   headTextStyle,
   smallTextStyle
-}
-
-TextStyle simpleTextStyle() {
-  return TextStyle(color: Colors.black54, fontSize: 16, fontFamily: 'Nexa');
-}
-
-TextStyle simpleTextErrorStyle() {
-  return TextStyle(color: Colors.red, fontSize: 16, fontFamily: 'Nexa');
-}
-
-TextStyle simpleHeadTextStyle() {
-  return TextStyle(color: Colors.black, fontSize: 19, fontFamily: 'Nexa');
-}
-
-TextStyle mainTextStyle() {
-  return TextStyle(color: Colors.black, fontSize: 45, fontFamily: 'Nexa');
-}
-
-TextStyle biggerTextStyle() {
-  return TextStyle(color: Colors.white, fontSize: 17, fontFamily: 'Nexa');
-}
-
-TextStyle headTextStyle() {
-  return TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'Nexa');
-}
-
-TextStyle smallTextStyle() {
-  return TextStyle(color: Colors.black54, fontSize: 12, fontFamily: 'Nexa');
 }
 
 TextStyle customTextStyle({
@@ -141,11 +116,13 @@ TextStyle customTextStyle({
     case TextStyleTypography.headTextStyle:
       color = blackColor;
       size = TextStyleSize.s20;
+      fontWeight = fontWeight ?? TextStyleWeight.bold;
       break;
 
     case TextStyleTypography.mainTextStyle:
       color = blackColor;
       size = TextStyleSize.s45;
+      fontWeight = fontWeight ?? TextStyleWeight.bold;
       break;
 
     case TextStyleTypography.simpleHeadTextStyle:
@@ -167,7 +144,7 @@ TextStyle customTextStyle({
       color = black54Color;
       size = TextStyleSize.s12;
       break;
-      
+
     default:
       break;
   }
